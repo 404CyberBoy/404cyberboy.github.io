@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404CyberBoy | Gaming Creator & Battlestation Setup</title>
+    <link rel="icon" type="image/png" href="logo.png">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -127,6 +128,24 @@
                 linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         }
 
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 9999px;
+            border: 2px solid rgba(0, 255, 102, 0.8);
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 18px rgba(0, 255, 102, 0.35), 0 0 30px rgba(0, 243, 255, 0.12);
+            filter: brightness(1.15) contrast(1.25) saturate(1.3) hue-rotate(65deg) sepia(0.15) drop-shadow(0 0 8px rgba(0, 255, 102, 0.6));
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 22px rgba(0, 255, 102, 0.55), 0 0 36px rgba(0, 243, 255, 0.18);
+            filter: brightness(1.25) contrast(1.35) saturate(1.5) hue-rotate(70deg) sepia(0.18) drop-shadow(0 0 12px rgba(0, 255, 102, 0.8));
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -151,13 +170,15 @@
 
     <header class="sticky top-0 z-50 glass-panel border-b border-gray-800/80 px-4 lg:px-8 py-3">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="#" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-lg bg-black border border-cyber-neon/50 flex items-center justify-center text-cyber-neon font-orbitron font-bold text-lg group-hover:shadow-neon-green transition-all duration-300">
-                    404
-                </div>
-                <div>
-                    <span class="font-orbitron font-extrabold text-lg tracking-wider text-white group-hover:text-cyber-neon transition-colors">404<span class="text-cyber-neon">CyberBoy</span></span>
-                    <span class="block text-xs font-mono text-gray-400">STREAMER // CREATOR</span>
+            <a href="#" class="flex items-center gap-3 shrink-0">
+                <img src="logo.png" alt="404CyberBoy logo" class="brand-logo" />
+                <div class="leading-none">
+                    <div class="font-orbitron text-lg font-black uppercase tracking-[0.08em] text-white drop-shadow-[0_0_14px_rgba(0,255,102,0.25)] sm:text-2xl group-hover:text-cyber-neon transition-colors">
+                        404<span class="text-cyber-neon">CyberBoy</span>
+                    </div>
+                    <div class="mt-1 text-[8px] font-mono uppercase tracking-[0.35em] text-gray-400 sm:text-[9px]">
+                        PLAY • STREAM • VIBE
+                    </div>
                 </div>
             </a>
 
@@ -189,11 +210,9 @@
                     <!-- Avatar & Status -->
                     <div class="lg:col-span-4 flex flex-col items-center text-center">
                         <div class="relative group">
-                            <div class="absolute -inset-1 bg-gradient-to-r from-cyber-neon via-cyber-cyan to-cyber-purple rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-                            <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-black p-1 border-2 border-cyber-neon overflow-hidden">
-                                <div class="w-full h-full rounded-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center text-cyber-neon">
-                                    <i class="fa-solid fa-headset text-6xl"></i>
-                                </div>
+                            <div class="absolute -inset-2 bg-gradient-to-r from-cyber-neon via-cyber-cyan to-cyber-purple rounded-full blur-xl opacity-70 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                            <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-black p-1 border-2 border-cyber-neon overflow-hidden shadow-[0_0_28px_rgba(0,255,102,0.35)]">
+                                <img src="logo.png" alt="404CyberBoy logo" class="w-full h-full rounded-full object-cover border-2 border-black/70 bg-black" />
                             </div>
                             <span class="absolute bottom-2 right-2 px-3 py-1 bg-black/90 border border-cyber-neon text-cyber-neon font-mono text-xs rounded-full flex items-center gap-1.5 shadow-lg">
                                 <span class="w-2 h-2 rounded-full bg-cyber-neon animate-ping"></span> ONLINE
@@ -206,8 +225,10 @@
                         <!-- Games Tags -->
                         <div class="flex flex-wrap justify-center gap-2 mt-4">
                             <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-crosshair text-red-500 mr-1"></i> VALORANT</span>
+                            <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-bomb text-orange-400 mr-1"></i> CS GO</span>
                             <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-shield text-yellow-500 mr-1"></i> PUBG PC</span>
                             <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-cube text-green-500 mr-1"></i> Minecraft</span>
+                            <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-gamepad text-cyber-cyan mr-1"></i> Fun Games</span>
                             <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-language text-cyber-cyan mr-1"></i> Telugu Streams</span>
                         </div>
                     </div>
@@ -252,17 +273,21 @@
                                class="px-4 py-2.5 rounded-lg bg-red-600/20 border border-red-500/50 text-red-400 hover:bg-red-600 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
                                 <i class="fa-brands fa-youtube text-base"></i> YouTube Channel
                             </a>
-                            <a href="https://twitch.tv" target="_blank" rel="noopener noreferrer" 
+                            <a href="https://www.twitch.tv/404cyberboy" target="_blank" rel="noopener noreferrer" 
                                class="px-4 py-2.5 rounded-lg bg-purple-600/20 border border-purple-500/50 text-purple-300 hover:bg-purple-600 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
                                 <i class="fa-brands fa-twitch text-base"></i> Twitch Live
                             </a>
-                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
+                            <a href="https://www.instagram.com/404_charan/" target="_blank" rel="noopener noreferrer" 
                                class="px-4 py-2.5 rounded-lg bg-pink-600/20 border border-pink-500/50 text-pink-300 hover:bg-pink-600 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
                                 <i class="fa-brands fa-instagram text-base"></i> Instagram
                             </a>
-                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" 
-                               class="px-4 py-2.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
-                                <i class="fa-brands fa-github text-base"></i> GitHub
+                            <a href="https://discord.com/invite/dgqvHVkeav" target="_blank" rel="noopener noreferrer" 
+                               class="px-4 py-2.5 rounded-lg bg-indigo-600/20 border border-indigo-500/50 text-indigo-300 hover:bg-indigo-600 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
+                                <i class="fa-brands fa-discord text-base"></i> Discord
+                            </a>
+                            <a href="https://kick.com/404cyberboy" target="_blank" rel="noopener noreferrer" 
+                               class="px-4 py-2.5 rounded-lg bg-green-600/20 border border-green-500/50 text-green-300 hover:bg-green-600 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-k text-base"></i> Kick
                             </a>
                         </div>
                     </div>
