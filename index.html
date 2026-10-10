@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404CyberBoy | Gaming Creator & Battlestation Setup</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Orbitron & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#0a0d14',
+                            card: '#111827',
+                            border: '#1f2937',
+                            neon: '#00ff66',
+                            cyan: '#00f3ff',
+                            purple: '#a855f7',
+                            pink: '#ff007f'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'neon-green': '0 0 20px rgba(0, 255, 102, 0.35)',
+                        'neon-cyan': '0 0 20px rgba(0, 243, 255, 0.35)',
+                        'neon-glow': '0 0 30px rgba(0, 255, 102, 0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0d14;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Scanline Overlay */
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0.3)
+            );
+            background-size: 100% 4px;
+        }
+
+        /* Cyber Glassmorphism */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(31, 41, 55, 0.8);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(0, 255, 102, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.15);
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            color: #ffffff;
+        }
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            clip: rect(0, 0, 0, 0);
+        }
+        .glitch::before {
+            left: -2px;
+            text-shadow: 2px 0 #00f3ff;
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: 2px;
+            text-shadow: -2px 0 #00ff66;
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(20px, 9999px, 15px, 0); }
+            20% { clip: rect(42px, 9999px, 80px, 0); }
+            40% { clip: rect(10px, 9999px, 60px, 0); }
+            60% { clip: rect(70px, 9999px, 20px, 0); }
+            80% { clip: rect(35px, 9999px, 90px, 0); }
+            100% { clip: rect(15px, 9999px, 50px, 0); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(25px, 9999px, 90px, 0); }
+            25% { clip: rect(10px, 9999px, 40px, 0); }
+            50% { clip: rect(85px, 9999px, 15px, 0); }
+            75% { clip: rect(50px, 9999px, 70px, 0); }
+            100% { clip: rect(30px, 9999px, 20px, 0); }
+        }
+
+        /* Grid Background Pattern */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0d14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ff66;
+        }
+    </style>
+</head>
+<body class="relative bg-cyber-bg text-gray-100 min-h-screen selection:bg-cyber-neon selection:text-black">
+
+    <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+    <div class="fixed inset-0 scanline pointer-events-none z-10 opacity-20"></div>
+
+    <header class="sticky top-0 z-50 glass-panel border-b border-gray-800/80 px-4 lg:px-8 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-lg bg-black border border-cyber-neon/50 flex items-center justify-center text-cyber-neon font-orbitron font-bold text-lg group-hover:shadow-neon-green transition-all duration-300">
+                    404
+                </div>
+                <div>
+                    <span class="font-orbitron font-extrabold text-lg tracking-wider text-white group-hover:text-cyber-neon transition-colors">404<span class="text-cyber-neon">CyberBoy</span></span>
+                    <span class="block text-xs font-mono text-gray-400">STREAMER // CREATOR</span>
+                </div>
+            </a>
+
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center gap-6 font-mono text-sm">
+                <a href="#about" class="text-gray-300 hover:text-cyber-neon transition-colors flex items-center gap-1.5"><i class="fa-solid fa-terminal text-cyber-cyan"></i> About</a>
+                <a href="#gear" class="text-gray-300 hover:text-cyber-neon transition-colors flex items-center gap-1.5"><i class="fa-solid fa-microchip text-cyber-neon"></i> Setup Gear</a>
+                <a href="#content" class="text-gray-300 hover:text-cyber-neon transition-colors flex items-center gap-1.5"><i class="fa-solid fa-play text-cyber-purple"></i> Content</a>
+                <a href="#socials" class="text-gray-300 hover:text-cyber-neon transition-colors flex items-center gap-1.5"><i class="fa-solid fa-share-nodes text-cyber-pink"></i> Connect</a>
+            </nav>
+
+            <!-- Action Button -->
+            <a href="https://www.youtube.com/@404CyberBoy?sub_confirmation=1" target="_blank" rel="noopener noreferrer" 
+               class="px-4 py-2 rounded-lg bg-cyber-neon text-black font-orbitron font-bold text-xs uppercase tracking-wider hover:bg-white hover:shadow-neon-green transition-all duration-300 flex items-center gap-2">
+                <i class="fa-brands fa-youtube text-lg"></i> Subscribe
+            </a>
+        </div>
+    </header>
+
+    <main class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16 space-y-16">
+
+        <section id="about" class="relative pt-6">
+            <div class="glass-panel rounded-2xl p-6 sm:p-10 relative overflow-hidden">
+                <!-- Background Accent Glow -->
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-cyber-neon/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="grid lg:grid-cols-12 gap-8 items-center">
+                    <!-- Avatar & Status -->
+                    <div class="lg:col-span-4 flex flex-col items-center text-center">
+                        <div class="relative group">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-cyber-neon via-cyber-cyan to-cyber-purple rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                            <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-black p-1 border-2 border-cyber-neon overflow-hidden">
+                                <div class="w-full h-full rounded-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center text-cyber-neon">
+                                    <i class="fa-solid fa-headset text-6xl"></i>
+                                </div>
+                            </div>
+                            <span class="absolute bottom-2 right-2 px-3 py-1 bg-black/90 border border-cyber-neon text-cyber-neon font-mono text-xs rounded-full flex items-center gap-1.5 shadow-lg">
+                                <span class="w-2 h-2 rounded-full bg-cyber-neon animate-ping"></span> ONLINE
+                            </span>
+                        </div>
+
+                        <h2 class="mt-4 font-orbitron font-extrabold text-2xl text-white">404CyberBoy</h2>
+                        <p class="text-xs font-mono text-cyber-cyan mt-1">&lt; Charan / Gamer & Streamer /&gt;</p>
+
+                        <!-- Games Tags -->
+                        <div class="flex flex-wrap justify-center gap-2 mt-4">
+                            <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-crosshair text-red-500 mr-1"></i> VALORANT</span>
+                            <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-shield text-yellow-500 mr-1"></i> PUBG PC</span>
+                            <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-cube text-green-500 mr-1"></i> Minecraft</span>
+                            <span class="px-2.5 py-1 bg-black/60 border border-gray-800 rounded text-xs font-mono text-gray-300"><i class="fa-solid fa-language text-cyber-cyan mr-1"></i> Telugu Streams</span>
+                        </div>
+                    </div>
+
+                    <!-- Hero Content Text -->
+                    <div class="lg:col-span-8 space-y-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 border border-cyber-neon/40 text-cyber-neon font-mono text-xs">
+                            <i class="fa-solid fa-bolt"></i> WELCOME TO THE BATTLESTATION HUB
+                        </div>
+
+                        <h1 class="glitch font-orbitron font-black text-3xl sm:text-5xl tracking-tight leading-tight" data-text="LEVEL UP YOUR GAMING EXPERIENCE">
+                            LEVEL UP YOUR GAMING EXPERIENCE
+                        </h1>
+
+                        <p class="text-gray-300 text-base sm:text-lg leading-relaxed font-sans">
+                            Hey! I’m <strong class="text-cyber-neon">404CyberBoy</strong>. I create high-octane gaming content, clutch montages, live gameplay streams, and full battlestation tech breakdowns. From intense 1v4 clutch plays to chilling on live Telugu streams, welcome to the official hub!
+                        </p>
+
+                        <!-- Quick Stats Grid -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                            <div class="p-3 rounded-lg bg-black/40 border border-gray-800 text-center">
+                                <div class="font-orbitron font-bold text-xl text-cyber-neon">1080p 60</div>
+                                <div class="text-xs font-mono text-gray-400">Stream Quality</div>
+                            </div>
+                            <div class="p-3 rounded-lg bg-black/40 border border-gray-800 text-center">
+                                <div class="font-orbitron font-bold text-xl text-cyber-cyan">RTX 3060Ti</div>
+                                <div class="text-xs font-mono text-gray-400">GPU Rig</div>
+                            </div>
+                            <div class="p-3 rounded-lg bg-black/40 border border-gray-800 text-center">
+                                <div class="font-orbitron font-bold text-xl text-cyber-purple">Dual 27"</div>
+                                <div class="text-xs font-mono text-gray-400">Monitors</div>
+                            </div>
+                            <div class="p-3 rounded-lg bg-black/40 border border-gray-800 text-center">
+                                <div class="font-orbitron font-bold text-xl text-cyber-pink">Daily</div>
+                                <div class="text-xs font-mono text-gray-400">Content / Streams</div>
+                            </div>
+                        </div>
+
+                        <!-- Social Action Links -->
+                        <div id="socials" class="flex flex-wrap items-center gap-3 pt-2">
+                            <a href="https://www.youtube.com/@404CyberBoy" target="_blank" rel="noopener noreferrer" 
+                               class="px-4 py-2.5 rounded-lg bg-red-600/20 border border-red-500/50 text-red-400 hover:bg-red-600 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
+                                <i class="fa-brands fa-youtube text-base"></i> YouTube Channel
+                            </a>
+                            <a href="https://twitch.tv" target="_blank" rel="noopener noreferrer" 
+                               class="px-4 py-2.5 rounded-lg bg-purple-600/20 border border-purple-500/50 text-purple-300 hover:bg-purple-600 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
+                                <i class="fa-brands fa-twitch text-base"></i> Twitch Live
+                            </a>
+                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
+                               class="px-4 py-2.5 rounded-lg bg-pink-600/20 border border-pink-500/50 text-pink-300 hover:bg-pink-600 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
+                                <i class="fa-brands fa-instagram text-base"></i> Instagram
+                            </a>
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" 
+                               class="px-4 py-2.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-2">
+                                <i class="fa-brands fa-github text-base"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gear" class="space-y-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-800/80 pb-6">
+                <div>
+                    <div class="inline-flex items-center gap-2 text-cyber-neon font-mono text-xs tracking-widest uppercase mb-1">
+                        <i class="fa-solid fa-microchip"></i> Hardware Specification
+                    </div>
+                    <h2 class="font-orbitron font-bold text-3xl text-white">BATTLESTATION <span class="text-cyber-neon">& GEAR</span></h2>
+                    <p class="text-gray-400 text-sm mt-1">Explore all hardware, displays, peripherals, and furniture powering the 404CyberBoy setup.</p>
+                </div>
+
+                <!-- Copy Gear List Button -->
+                <button onclick="copyGearList()" class="px-4 py-2 rounded-lg bg-black/60 border border-cyber-neon/40 text-cyber-neon font-mono text-xs hover:bg-cyber-neon hover:text-black transition-all flex items-center gap-2 self-start md:self-auto">
+                    <i class="fa-solid fa-copy"></i> <span id="copyBtnText">Copy Stream Setup Bio</span>
+                </button>
+            </div>
+
+            <!-- Search & Filter Controls -->
+            <div class="grid md:grid-cols-12 gap-4">
+                <!-- Search Input -->
+                <div class="md:col-span-5 relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-xs"></i>
+                    <input type="text" id="gearSearch" onkeyup="filterGear()" placeholder="Search components, brands, or models..." 
+                           class="w-full bg-black/60 border border-gray-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-cyber-neon focus:ring-1 focus:ring-cyber-neon font-sans transition-all">
+                </div>
+
+                <!-- Category Tab Buttons -->
+                <div class="md:col-span-7 flex flex-wrap items-center gap-2" id="filterTabs">
+                    <button onclick="setCategory('all')" data-cat="all" class="cat-btn px-4 py-2.5 rounded-xl font-mono text-xs font-semibold bg-cyber-neon text-black transition-all">
+                        All (<span id="count-all">0</span>)
+                    </button>
+                    <button onclick="setCategory('pcrig')" data-cat="pcrig" class="cat-btn px-4 py-2.5 rounded-xl font-mono text-xs font-semibold bg-black/60 border border-gray-800 text-gray-300 hover:border-cyber-neon transition-all">
+                        <i class="fa-solid fa-cpu text-cyber-cyan mr-1"></i> PC Rig (<span id="count-pcrig">0</span>)
+                    </button>
+                    <button onclick="setCategory('displays')" data-cat="displays" class="cat-btn px-4 py-2.5 rounded-xl font-mono text-xs font-semibold bg-black/60 border border-gray-800 text-gray-300 hover:border-cyber-neon transition-all">
+                        <i class="fa-solid fa-desktop text-cyber-purple mr-1"></i> Displays (<span id="count-displays">0</span>)
+                    </button>
+                    <button onclick="setCategory('peripherals')" data-cat="peripherals" class="cat-btn px-4 py-2.5 rounded-xl font-mono text-xs font-semibold bg-black/60 border border-gray-800 text-gray-300 hover:border-cyber-neon transition-all">
+                        <i class="fa-solid fa-keyboard text-cyber-neon mr-1"></i> Audio & Gear (<span id="count-peripherals">0</span>)
+                    </button>
+                    <button onclick="setCategory('workspace')" data-cat="workspace" class="cat-btn px-4 py-2.5 rounded-xl font-mono text-xs font-semibold bg-black/60 border border-gray-800 text-gray-300 hover:border-cyber-neon transition-all">
+                        <i class="fa-solid fa-chair text-cyber-pink mr-1"></i> Workspace (<span id="count-workspace">0</span>)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Gear Grid Display -->
+            <div id="gearGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- Dynamically Populated via JavaScript -->
+            </div>
+
+            <!-- Empty State Notice -->
+            <div id="emptyNotice" class="hidden glass-panel rounded-2xl p-12 text-center space-y-3">
+                <i class="fa-solid fa-ghost text-4xl text-gray-600 animate-bounce"></i>
+                <h3 class="font-orbitron font-bold text-lg text-white">404: NO MATCHING GEAR FOUND</h3>
+                <p class="text-sm font-mono text-gray-400">Try adjusting your search query or switching categories.</p>
+            </div>
+        </section>
+
+        <section id="content" class="space-y-8">
+            <div class="border-b border-gray-800/80 pb-6">
+                <div class="inline-flex items-center gap-2 text-cyber-cyan font-mono text-xs tracking-widest uppercase mb-1">
+                    <i class="fa-solid fa-play"></i> Channel Highlights
+                </div>
+                <h2 class="font-orbitron font-bold text-3xl text-white">FEATURED <span class="text-cyber-cyan">CONTENT</span></h2>
+                <p class="text-gray-400 text-sm mt-1">Check out popular series and playlists from 404CyberBoy.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Card 1: VALORANT Clutches -->
+                <div class="glass-panel rounded-2xl p-6 space-y-4 flex flex-col justify-between group">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/40 flex items-center justify-center text-red-500 text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-crosshair"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-xl text-white group-hover:text-red-400 transition-colors">VALORANT Clutches</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            High-rank competitive matches, agent guides, insane 1vX clutches, and radiant aim montages.
+                        </p>
+                    </div>
+                    <a href="https://www.youtube.com/@404CyberBoy/playlists" target="_blank" rel="noopener noreferrer" 
+                       class="w-full py-2.5 rounded-lg bg-black/60 border border-red-500/40 text-red-400 hover:bg-red-500 hover:text-white font-mono text-xs font-bold text-center transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Watch Playlists
+                    </a>
+                </div>
+
+                <!-- Card 2: PUBG PC Squad Plays -->
+                <div class="glass-panel rounded-2xl p-6 space-y-4 flex flex-col justify-between group">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-yellow-500/10 border border-yellow-500/40 flex items-center justify-center text-yellow-500 text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-xl text-white group-hover:text-yellow-400 transition-colors">PUBG PC Squad Fights</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Tactical squad wipes, long-range sniper shots, chicken dinner victories, and funny highlights.
+                        </p>
+                    </div>
+                    <a href="https://www.youtube.com/@404CyberBoy/playlists" target="_blank" rel="noopener noreferrer" 
+                       class="w-full py-2.5 rounded-lg bg-black/60 border border-yellow-500/40 text-yellow-400 hover:bg-yellow-500 hover:text-black font-mono text-xs font-bold text-center transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Watch Playlists
+                    </a>
+                </div>
+
+                <!-- Card 3: Shorts & Highlights -->
+                <div class="glass-panel rounded-2xl p-6 space-y-4 flex flex-col justify-between group">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-cyber-pink/10 border border-cyber-pink/40 flex items-center justify-center text-cyber-pink text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-xl text-white group-hover:text-cyber-pink transition-colors">Shorts & Quick Clips</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Bite-sized viral gaming moments, funny fails, agent tricks, and fast reaction shorts.
+                        </p>
+                    </div>
+                    <a href="https://www.youtube.com/@404CyberBoy/shorts" target="_blank" rel="noopener noreferrer" 
+                       class="w-full py-2.5 rounded-lg bg-black/60 border border-cyber-pink/40 text-cyber-pink hover:bg-cyber-pink hover:text-black font-mono text-xs font-bold text-center transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bolt"></i> View YouTube Shorts
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="relative z-20 border-t border-gray-800/80 bg-black/80 py-8 text-center">
+        <div class="max-w-7xl mx-auto px-4 space-y-4">
+            <div class="flex items-center justify-center gap-2">
+                <span class="font-orbitron font-extrabold text-white text-lg">404<span class="text-cyber-neon">CyberBoy</span></span>
+            </div>
+            <p class="text-xs font-mono text-gray-400">
+                &copy; 2026 404CyberBoy. Gaming, Streams & Tech Setup. Hosted on GitHub Pages.
+            </p>
+            <div class="flex justify-center gap-4 text-xs font-mono text-gray-500">
+                <a href="#about" class="hover:text-cyber-neon transition-colors">Top</a>
+                <span>•</span>
+                <a href="https://www.youtube.com/@404CyberBoy" target="_blank" class="hover:text-cyber-neon transition-colors">YouTube</a>
+                <span>•</span>
+                <a href="#gear" class="hover:text-cyber-neon transition-colors">Setup Specs</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // GEAR DATASET - Derived from provided user product sheet
+        const gearItems = [
+            // PC RIG
+            {
+                id: 1,
+                category: 'pcrig',
+                item: 'PC Case',
+                model: 'NZXT H7 Flow ATX Mid-Tower Glass Case',
+                icon: 'fa-box',
+                badgeColor: 'text-cyber-neon border-cyber-neon/30 bg-cyber-neon/10',
+                link: 'https://amzn.in/d/0a9iKl5F'
+            },
+            {
+                id: 2,
+                category: 'pcrig',
+                item: 'CPU Cooler',
+                model: 'Cooler Master MasterLiquid 240L Core',
+                icon: 'fa-fan',
+                badgeColor: 'text-cyber-neon border-cyber-neon/30 bg-cyber-neon/10',
+                link: 'https://amzn.in/d/06NhLUd9'
+            },
+            {
+                id: 3,
+                category: 'pcrig',
+                item: 'Graphics Card (GPU)',
+                model: 'Gigabyte GeForce RTX 3060 Ti Eagle OC 8G',
+                icon: 'fa-microchip',
+                badgeColor: 'text-cyber-cyan border-cyber-cyan/30 bg-cyber-cyan/10',
+                link: null
+            },
+            {
+                id: 4,
+                category: 'pcrig',
+                item: 'Storage',
+                model: 'Gigabyte Gen3 2500E NVMe M.2 SSD',
+                icon: 'fa-hard-drive',
+                badgeColor: 'text-cyber-cyan border-cyber-cyan/30 bg-cyber-cyan/10',
+                link: null
+            },
+            {
+                id: 5,
+                category: 'pcrig',
+                item: 'Motherboard',
+                model: 'ASUS Prime Z390-P',
+                icon: 'fa-memory',
+                badgeColor: 'text-cyber-neon border-cyber-neon/30 bg-cyber-neon/10',
+                link: 'https://amzn.in/d/0hL5BwLh'
+            },
+            {
+                id: 6,
+                category: 'pcrig',
+                item: 'CPU Processor',
+                model: 'Intel Core i7-9700K',
+                icon: 'fa-microchip',
+                badgeColor: 'text-yellow-400 border-yellow-400/30 bg-yellow-400/10',
+                link: 'https://dl.flipkart.com/s/7egEn_NNNN'
+            },
+            {
+                id: 7,
+                category: 'pcrig',
+                item: 'Memory (RAM)',
+                model: 'G.Skill Ripjaws V DDR4',
+                icon: 'fa-server',
+                badgeColor: 'text-cyber-neon border-cyber-neon/30 bg-cyber-neon/10',
+                link: 'https://amzn.in/d/05Q6p6IP'
+            },
+            {
+                id: 8,
+                category: 'pcrig',
+                item: 'Power Supply (PSU)',
+                model: 'DeepCool DQ850-M-V2L',
+                icon: 'fa-plug',
+                badgeColor: 'text-yellow-400 border-yellow-400/30 bg-yellow-400/10',
+                link: 'https://dl.flipkart.com/s/7RQI64NNNN'
+            },
+
+            // DISPLAYS
+            {
+                id: 9,
+                category: 'displays',
+                item: 'Primary Monitor',
+                model: 'MSI MAG 275QF',
+                icon: 'fa-desktop',
+                badgeColor: 'text-cyber-purple border-cyber-purple/30 bg-cyber-purple/10',
+                link: 'https://amzn.in/d/064u47om'
+            },
+            {
+                id: 10,
+                category: 'displays',
+                item: 'Secondary Monitor',
+                model: 'Acer Nitro VG270',
+                icon: 'fa-desktop',
+                badgeColor: 'text-cyber-purple border-cyber-purple/30 bg-cyber-purple/10',
+                link: 'https://amzn.in/d/0dxvHeCl'
+            },
+            {
+                id: 11,
+                category: 'displays',
+                item: 'Monitor Arm',
+                model: 'Amazon Basics Heavy-Duty Dual Monitor Arm',
+                icon: 'fa-arrows-left-right-to-line',
+                badgeColor: 'text-cyber-purple border-cyber-purple/30 bg-cyber-purple/10',
+                link: 'https://amzn.in/d/07UmPzgG'
+            },
+
+            // PERIPHERALS & AUDIO
+            {
+                id: 12,
+                category: 'peripherals',
+                item: 'Keyboard',
+                model: 'Cosmic Byte CB-GK-34 Firefly',
+                icon: 'fa-keyboard',
+                badgeColor: 'text-cyber-neon border-cyber-neon/30 bg-cyber-neon/10',
+                link: 'https://amzn.in/d/0cy1ixxT'
+            },
+            {
+                id: 13,
+                category: 'peripherals',
+                item: 'Mouse',
+                model: 'ZEBRONICS Transformer-M',
+                icon: 'fa-computer-mouse',
+                badgeColor: 'text-cyber-neon border-cyber-neon/30 bg-cyber-neon/10',
+                link: 'https://amzn.in/d/03UOrDxZ'
+            },
+            {
+                id: 14,
+                category: 'peripherals',
+                item: 'IEM / Earphones',
+                model: "Tangzu Wan'er SG 2 Red Lion (Bass Edition)",
+                icon: 'fa-headphones',
+                badgeColor: 'text-cyber-neon border-cyber-neon/30 bg-cyber-neon/10',
+                link: 'https://amzn.in/d/0dFRgL4C'
+            },
+            {
+                id: 15,
+                category: 'peripherals',
+                item: 'Microphone',
+                model: 'Fifine K683A USB Desktop PC Microphone',
+                icon: 'fa-microphone',
+                badgeColor: 'text-cyber-neon border-cyber-neon/30 bg-cyber-neon/10',
+                link: 'https://amzn.in/d/0ckYFqT8'
+            },
+
+            // STREAMING & WORKSPACE
+            {
+                id: 16,
+                category: 'workspace',
+                item: 'Webcam',
+                model: 'Lenovo 300 FHD Webcam',
+                icon: 'fa-video',
+                badgeColor: 'text-cyber-pink border-cyber-pink/30 bg-cyber-pink/10',
+                link: 'https://amzn.in/d/06GofrU0'
+            },
+            {
+                id: 17,
+                category: 'workspace',
+                item: 'Gaming Desk',
+                model: 'IKEA UTESPELARE Gaming Desk',
+                icon: 'fa-table-cells-large',
+                badgeColor: 'text-cyber-pink border-cyber-pink/30 bg-cyber-pink/10',
+                link: 'https://amzn.in/d/0b8aIPxv'
+            },
+            {
+                id: 18,
+                category: 'workspace',
+                item: 'Gaming Chair',
+                model: 'Featherlite Amaze MB Mesh Office Chair',
+                icon: 'fa-chair',
+                badgeColor: 'text-cyber-pink border-cyber-pink/30 bg-cyber-pink/10',
+                link: 'https://amzn.in/d/0bghU23I'
+            },
+            {
+                id: 19,
+                category: 'workspace',
+                item: 'Lighting & Ambience',
+                model: 'One94Store Premium Smart SMD Rope Light',
+                icon: 'fa-lightbulb',
+                badgeColor: 'text-cyber-pink border-cyber-pink/30 bg-cyber-pink/10',
+                link: 'https://amzn.in/d/04A5A5nU'
+            }
+        ];
+
+        let currentCat = 'all';
+
+        // Render Gear Items
+        function renderGear() {
+            const grid = document.getElementById('gearGrid');
+            const searchVal = document.getElementById('gearSearch').value.toLowerCase();
+            const emptyNotice = document.getElementById('emptyNotice');
+
+            grid.innerHTML = '';
+
+            const filtered = gearItems.filter(item => {
+                const matchesCat = (currentCat === 'all' || item.category === currentCat);
+                const matchesSearch = item.item.toLowerCase().includes(searchVal) || item.model.toLowerCase().includes(searchVal);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                emptyNotice.classList.remove('hidden');
+            } else {
+                emptyNotice.classList.add('hidden');
+                filtered.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-panel rounded-xl p-5 flex flex-col justify-between space-y-4 group transition-all duration-300 hover:-translate-y-1';
+                    
+                    const linkBtn = item.link 
+                        ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-cyber-neon/10 border border-cyber-neon/40 text-cyber-neon hover:bg-cyber-neon hover:text-black font-mono text-xs font-semibold transition-all flex items-center gap-1.5">
+                            Buy/View <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                           </a>`
+                        : `<span class="px-3 py-1.5 rounded-lg bg-gray-800/60 text-gray-500 font-mono text-xs">Owned</span>`;
+
+                    card.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="w-10 h-10 rounded-lg bg-black/60 border border-gray-800 flex items-center justify-center text-cyber-neon group-hover:border-cyber-neon transition-colors">
+                                    <i class="fa-solid ${item.icon} text-lg"></i>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase border ${item.badgeColor}">
+                                    ${item.item}
+                                </span>
+                            </div>
+                            <div>
+                                <h3 class="font-orbitron font-bold text-base text-white group-hover:text-cyber-neon transition-colors line-clamp-2">${item.model}</h3>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-gray-800/60">
+                            <span class="text-xs font-mono text-gray-400">Component</span>
+                            ${linkBtn}
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            updateCounts();
+        }
+
+        // Category Filter Setup
+        function setCategory(cat) {
+            currentCat = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.className = 'cat-btn px-4 py-2.5 rounded-xl font-mono text-xs font-semibold bg-cyber-neon text-black transition-all';
+                } else {
+                    btn.className = 'cat-btn px-4 py-2.5 rounded-xl font-mono text-xs font-semibold bg-black/60 border border-gray-800 text-gray-300 hover:border-cyber-neon transition-all';
+                }
+            });
+            renderGear();
+        }
+
+        function filterGear() {
+            renderGear();
+        }
+
+        // Update Counter Badges
+        function updateCounts() {
+            document.getElementById('count-all').innerText = gearItems.length;
+            document.getElementById('count-pcrig').innerText = gearItems.filter(i => i.category === 'pcrig').length;
+            document.getElementById('count-displays').innerText = gearItems.filter(i => i.category === 'displays').length;
+            document.getElementById('count-peripherals').innerText = gearItems.filter(i => i.category === 'peripherals').length;
+            document.getElementById('count-workspace').innerText = gearItems.filter(i => i.category === 'workspace').length;
+        }
+
+        // Quick Copy Setup Spec for YouTube Description
+        function copyGearList() {
+            let specText = "🎮 404CyberBoy Streaming Setup & Specs:\n\n";
+            gearItems.forEach(item => {
+                specText += `• ${item.item}: ${item.model}${item.link ? ' - ' + item.link : ''}\n`;
+            });
+
+            // Fallback copy execution
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = specText;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            const copyBtnText = document.getElementById('copyBtnText');
+            copyBtnText.innerText = "Copied to Clipboard!";
+            setTimeout(() => {
+                copyBtnText.innerText = "Copy Stream Setup Bio";
+            }, 2500);
+        }
+
+        // Particle Canvas Animation Background
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const particles = [];
+        for (let i = 0; i < 45; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                color: Math.random() > 0.5 ? '#00ff66' : '#00f3ff',
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: (Math.random() - 0.5) * 0.4
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = p.color;
+                ctx.fill();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            renderGear();
+            animateParticles();
+        };
+    </script>
+</body>
+</html>
